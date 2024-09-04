@@ -1,6 +1,4 @@
 # Excepciones del Banco
-
-
 class NombreIncorrectoError(Exception):
     pass
 
@@ -13,10 +11,32 @@ class PinIncorrectoError(Exception):
     pass
 
 
-# Constantes
-NOMBRE_CORRECTO = "Pepe"
-NUMERO_CUENTA_CORRECTO = "123456789"
-PIN_CORRECTO = "1234"
+# Clase usuario
+class Usuario:
+    def __init__(self, nombre, numero_cuenta, pin):
+        self.nombre = nombre
+        self.numero_cuenta = numero_cuenta
+        self.pin = pin
+
+
+USUARIO_CORRECTO = Usuario("Pepe", "123456789", "1234")
+
+
+def Validar_usuario(usuario):
+    """
+    Validamos la información del usuario
+    """
+
+    # Validar la información
+    if usuario.nombre != USUARIO_CORRECTO.nombre:
+        raise NombreIncorrectoError
+    ("El nombre que ingresaste es incorrecto")
+    if usuario.numero_cuenta != USUARIO_CORRECTO.numero_cuenta:
+        raise NumeroCuentaIncorrectoError(
+            "El numero de cuenta que ingresaste es incorrecto"
+        )
+    if usuario.pin != USUARIO_CORRECTO.pin:
+        raise PinIncorrectoError("El pin que ingresaste es incorrecto")
 
 
 def cajero_electronico():
@@ -31,19 +51,14 @@ def cajero_electronico():
             numero_cuenta = input("Ingrese su numero de cuenta: ")
             pin = input("Ingrese su pin: ")
 
-            # Validar la información
-            if nombre != NOMBRE_CORRECTO:
-                raise NombreIncorrectoError
-            ("El nombre que ingresaste es incorrecto")
-            if numero_cuenta != NUMERO_CUENTA_CORRECTO:
-                raise NumeroCuentaIncorrectoError(
-                    "El numero de cuenta que ingresaste es incorrecto"
-                )
-            if pin != PIN_CORRECTO:
-                raise PinIncorrectoError("El pin que ingresaste es incorrecto")
+            # Crear una instancia
+            usuario = Usuario(nombre, numero_cuenta, pin)
 
-            # Si todo va bien
-            print("Felicidades pudiste acceder a tu cuenta")
+            # validar usuario
+            Validar_usuario(usuario)
+
+            # Todo bien 😎
+            print("Accediste a tu cuenta")
             break
 
         except (
@@ -57,6 +72,9 @@ def cajero_electronico():
                 print(f"Tienes {max_intentos - intentos} intentos restantes")
             else:
                 print("Alcanzaste la cantidad de intentos permitidos")
+
+        finally:
+            print("Se termino el intento de acceder")
 
 
 # invocar la función
